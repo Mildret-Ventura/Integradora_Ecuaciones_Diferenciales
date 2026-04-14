@@ -1,0 +1,43 @@
+========================================================================
+    INSTRUCCIONES DE EJECUCIÓN - LAPLACE STUDIO PRO
+========================================================================
+
+Este programa permite resolver ecuaciones diferenciales de primer y 
+segundo orden utilizando la Transformada de Laplace con una interfaz 
+gráfica moderna y funciones avanzadas.
+
+--- 1. REQUISITOS PREVIOS ---
+Asegúrate de tener Python instalado (versión 3.8 o superior). 
+Debes instalar las librerías necesarias ejecutando el siguiente comando 
+en tu terminal o símbolo del sistema:
+
+    python -m pip install customtkinter packaging sympy numpy matplotlib fpdf2 scipy
+
+--- 2. CÓMO EJECUTAR EL PROGRAMA ---
+Una vez instaladas las librerías, navega hasta la carpeta del proyecto 
+y ejecuta el archivo principal:
+
+    python main.py
+
+--- 3. NUEVAS FUNCIONES PRO ---
+- INTERPRETADOR DE TEXTO: Ahora puedes escribir la ecuación de forma 
+  natural (Ejemplo: y'' + 3y' + 2y = 0) en lugar de código SymPy.
+- EXPORTACIÓN A PDF: Usa el botón verde para generar un reporte 
+  profesional con los resultados y la gráfica.
+- COMPARACIÓN NUMÉRICA: Activa la casilla para ver puntos de 
+  comparación numérica sobre la gráfica analítica.
+
+--- 4. EJEMPLOS PARA COPIAR Y PEGAR (MODO LIBRE) ---
+EJEMPLO A (Notación natural):
+Ecuación: y'' + 5y' + 6y = 0
+y(0): 1.0
+y'(0): 0.0
+
+EJEMPLO B (Con función externa):
+Ecuación: y' + 2y = exp(t)
+y(0): 0.0
+
+--- 5. NOTA IMPORTANTE ---
+Si la terminal no reconoce el comando 'python', intenta con 'python3' 
+o 'py'.
+========================================================================

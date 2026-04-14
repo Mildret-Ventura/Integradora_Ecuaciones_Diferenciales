@@ -1,0 +1,39 @@
+========================================================================
+    GUÍA DE EJERCICIOS Y EXTENSIONES PRO - LAPLACE STUDIO
+========================================================================
+
+Este documento detalla los 4 casos mínimos requeridos por la tarea 
+integradora y las extensiones opcionales implementadas.
+
+--- 1. CASOS DE PRUEBA MÍNIMOS ---
+Caso 1: y' + 2y = 0, y(0) = 1  => y(t) = exp(-2t)
+Caso 2: y'' + 3y' + 2y = 0, y(0) = 0, y'(0) = 1  => y(t) = exp(-t) - exp(-2t)
+Caso 3: y' - y = exp(t), y(0) = 1  => y(t) = (t + 1)*exp(t)
+Caso 4: y'' + y = sin(t), y(0) = 0, y'(0) = 0  => y(t) = sin(t)/2 - t*cos(t)/2
+
+--- 2. EXTENSIONES OPCIONALES IMPLEMENTADAS ---
+A. Interfaz Gráfica Moderna: Usando CustomTkinter con estética Dashboard.
+B. Interpretador de Texto: Acepta notación natural (y'', y', etc.) 
+   mediante el uso de expresiones regulares.
+C. Exportación a PDF: Botón de generación automática de reportes.
+D. Comparación con Métodos Numéricos: Casilla de verificación para 
+   visualizar la comparación en la gráfica.
+
+========================================================================
+    RESPUESTAS A LA REFLEXIÓN FINAL
+========================================================================
+
+1. ¿Qué dificultades encontraste al implementar matemáticas en código?
+   La mayor dificultad fue el manejo de las transformadas de Laplace 
+   para funciones arbitrarias y la correcta sustitución de las 
+   condiciones iniciales en las derivadas. SymPy es potente, pero 
+   requiere un tratamiento cuidadoso de los términos para que la 
+   resolución algebraica sea exitosa.
+
+2. ¿Cómo mejorarías tu programa?
+   - Implementando un interpretador de texto más robusto (ej. usando 
+     expresiones regulares o un parser real).
+   - Añadiendo soporte para sistemas de ecuaciones diferenciales.
+   - Mejorando la interfaz gráfica con Tkinter o una aplicación web 
+     con Streamlit.
+========================================================================
