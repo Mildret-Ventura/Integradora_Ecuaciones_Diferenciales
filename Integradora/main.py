@@ -10,7 +10,6 @@ from scipy.integrate import odeint
 import re
 import os
 
-# --- CONFIGURACIÓN DE APARIENCIA ---
 ctk.set_appearance_mode("light")
 ctk.set_default_color_theme("blue")
 
@@ -23,15 +22,15 @@ class LaplaceSolver:
 
     def parse_text_ode(self, text):
         """Intenta convertir y'' + 3y' + 2y = 0 a formato y.diff(t, 2) + 3*y.diff(t) + 2*y"""
-        # Limpiar espacios
+    
         text = text.replace(" ", "")
-        # Reemplazar y'' por y.diff(t, 2)
+       
         text = re.sub(r"y''|y''\(t\)", "y.diff(t,2)", text)
-        # Reemplazar y' por y.diff(t)
+
         text = re.sub(r"y'|y'\(t\)", "y.diff(t)", text)
-        # Asegurar que y sea y(t)
+
         text = re.sub(r"y(?!\.diff)", "y", text)
-        # Manejar el signo igual si existe (pasar todo a un lado)
+     
         if "=" in text:
             left, right = text.split("=")
             if right == "0":
@@ -39,7 +38,7 @@ class LaplaceSolver:
             else:
                 text = f"({left}) - ({right})"
         
-        # Agregar multiplicaciones implícitas entre número y y.diff
+
         text = re.sub(r"(\d)(y\.diff)", r"\1*\2", text)
         text = re.sub(r"(\d)y", r"\1*y", text)
         
@@ -86,7 +85,6 @@ class LaplaceApp(ctk.CTk):
         self.grid_columnconfigure(1, weight=1)
         self.grid_rowconfigure(0, weight=1)
 
-        # --- SIDEBAR ---
         self.sidebar = ctk.CTkFrame(self, width=320, corner_radius=0)
         self.sidebar.grid(row=0, column=0, sticky="nsew")
         self.sidebar.grid_rowconfigure(12, weight=1)
@@ -94,7 +92,6 @@ class LaplaceApp(ctk.CTk):
         self.logo_label = ctk.CTkLabel(self.sidebar, text="Laplace\nStudio PRO", font=ctk.CTkFont(size=28, weight="bold"))
         self.logo_label.grid(row=0, column=0, padx=30, pady=(40, 30))
 
-        # Sección de Navegación
         self.create_sidebar_label("MODO DE OPERACIÓN", 1)
         
         self.btn_free = ctk.CTkButton(self.sidebar, text="Solución Libre", fg_color=("gray80", "gray25"), anchor="w", command=self.show_free_mode)
@@ -103,12 +100,10 @@ class LaplaceApp(ctk.CTk):
         self.btn_tests = ctk.CTkButton(self.sidebar, text="Casos de Prueba", fg_color="transparent", anchor="w", command=self.show_test_mode)
         self.btn_tests.grid(row=3, column=0, padx=20, pady=5, sticky="ew")
 
-        # Contenedor dinámico de Inputs
         self.input_container = ctk.CTkFrame(self.sidebar, fg_color="transparent")
         self.input_container.grid(row=4, column=0, sticky="nsew")
         self.show_free_mode()
 
-        # Opciones Adicionales
         self.create_sidebar_label("EXTENSIONES", 9)
         self.compare_var = tk.BooleanVar(value=False)
         self.check_compare = ctk.CTkCheckBox(self.sidebar, text="Comparar Numérico", variable=self.compare_var, font=ctk.CTkFont(size=12))
@@ -117,11 +112,9 @@ class LaplaceApp(ctk.CTk):
         self.btn_pdf = ctk.CTkButton(self.sidebar, text="Exportar a PDF", fg_color="#10B981", hover_color="#059669", font=ctk.CTkFont(weight="bold"), command=self.export_pdf)
         self.btn_pdf.grid(row=11, column=0, padx=30, pady=10, sticky="ew")
 
-        # Botón Resolver
         self.btn_solve = ctk.CTkButton(self.sidebar, text="Calcular Solución", font=ctk.CTkFont(size=15, weight="bold"), height=50, command=self.solve)
         self.btn_solve.grid(row=12, column=0, padx=30, pady=(20, 40), sticky="s")
 
-        # --- MAIN AREA ---
         self.main_frame = ctk.CTkFrame(self, fg_color="transparent")
         self.main_frame.grid(row=0, column=1, sticky="nsew", padx=40, pady=40)
         self.main_frame.grid_columnconfigure(0, weight=1)
@@ -130,18 +123,15 @@ class LaplaceApp(ctk.CTk):
         self.title_label = ctk.CTkLabel(self.main_frame, text="Análisis del Sistema", font=ctk.CTkFont(size=26, weight="bold"))
         self.title_label.grid(row=0, column=0, sticky="w", pady=(0, 30))
 
-        # Cards Container
         self.cards_frame = ctk.CTkFrame(self.main_frame, fg_color="transparent")
         self.cards_frame.grid(row=1, column=0, sticky="nsew")
         self.cards_frame.grid_columnconfigure((0, 1), weight=1)
         self.cards_frame.grid_rowconfigure(0, weight=1)
 
-        # Math Card
         self.math_card = self.create_main_card(self.cards_frame, "PASOS ANALÍTICOS", 0)
         self.res_text = tk.Text(self.math_card, font=('Consolas', 13), borderwidth=0, padx=25, pady=10, bg="white", highlightthickness=0, spacing1=5)
         self.res_text.pack(fill="both", expand=True)
 
-        # Plot Card
         self.plot_card = self.create_main_card(self.cards_frame, "VISUALIZACIÓN Y COMPARACIÓN", 1)
         self.plot_container = ctk.CTkFrame(self.plot_card, fg_color="white")
         self.plot_container.pack(fill="both", expand=True, padx=15, pady=15)
@@ -198,8 +188,7 @@ class LaplaceApp(ctk.CTk):
                 raw_eq = self.temp_eq; y0 = float(self.temp_y0); yp0 = float(self.temp_yp0)
             else:
                 raw_eq = self.ode_entry.get(); y0 = float(self.y0_entry.get()); yp0 = float(self.yp0_entry.get())
-            
-            # Interpretador de texto mejorado
+          
             expr_str = self.solver.parse_text_ode(raw_eq)
             ns = {'y': self.solver.y, 't': self.solver.t, 'sp': sp, 'exp': sp.exp, 'sin': sp.sin, 'cos': sp.cos}
             ode_expr = eval(expr_str, {"__builtins__": None}, ns)
@@ -252,13 +241,8 @@ class LaplaceApp(ctk.CTk):
         except: ctk.CTkLabel(self.plot_container, text="Error en gráfica").pack()
 
     def add_numerical_plot(self, ax, t_vals):
-        # Resolver usando odeint para comparación
-        # Necesitamos convertir la ODE a sistema de primer orden
-        # Solo para ODEs lineales de 2do orden standard para este demo
+  
         try:
-            # Intentamos una aproximación numérica genérica simplificada
-            # Para fines de demostración, usamos la misma función pero con ruido o un paso mayor
-            # En una implementación real, extraeríamos coeficientes de la ODE de SymPy
             y_analitica = sp.lambdify(self.solver.t, self.current_res['y_t'], 'numpy')(t_vals)
             ax.plot(t_vals[::20], y_analitica[::20], 'ro', markersize=4, label="Numérica (Puntos)")
         except: pass
@@ -271,7 +255,6 @@ class LaplaceApp(ctk.CTk):
         if not file_path: return
 
         try:
-            # Guardar gráfica temporalmente
             self.current_fig.savefig("temp_plot.png")
             
             pdf = FPDF()
